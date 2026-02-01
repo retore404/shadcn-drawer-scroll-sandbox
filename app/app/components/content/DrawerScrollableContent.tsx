@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "../ui/button"
 import {
   Drawer,
@@ -10,9 +11,21 @@ import {
   DrawerTrigger,
 } from "../ui/drawer"
 
+const SNAP_POINTS = [0.2, 0.45, 1] as const;
+const DEFAULT_SNAP_POINT = 0.45;
+
 export function DrawerScrollableContent() {
+  const [activeSnapPoint, setActiveSnapPoint] = useState<
+    number | string | null
+  >(DEFAULT_SNAP_POINT);
   return (
-    <Drawer direction="bottom">
+    <Drawer
+      direction="bottom"
+      modal={false}
+      snapPoints={SNAP_POINTS as unknown as (number | string)[]}
+      activeSnapPoint={activeSnapPoint}
+      setActiveSnapPoint={setActiveSnapPoint}
+    >
       <DrawerTrigger asChild>
         <Button variant="outline">Scrollable Content</Button>
       </DrawerTrigger>
@@ -36,6 +49,7 @@ export function DrawerScrollableContent() {
               sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
           ))}
+          <span>The end.</span>
         </div>
         {/* <DrawerFooter>
           <Button>Submit</Button>
