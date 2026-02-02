@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../ui/button"
 import {
   Drawer,
@@ -25,9 +25,32 @@ export function DrawerScrollableContent({ isOpen, setIsOpen }: DrawerScrollableC
     number | string | null
   >(DEFAULT_SNAP_POINT);
 
-  const handleInputFocus = () => {
-    setActiveSnapPoint(1);
-  };
+  // iOSでキーボード表示時のスクロールを防止
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const preventScroll = (e: Event) => {
+      const target = e.target as HTMLElement;
+      // Drawer内のスクロールコンテナは許可
+      if (target.closest('.overflow-y-auto')) return;
+      e.preventDefault();
+    };
+
+    const handleVisualViewportResize = () => {
+      // キーボード表示時にbody/htmlのスクロール位置をリセット
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+
+    document.addEventListener('touchmove', preventScroll, { passive: false });
+    window.visualViewport?.addEventListener('resize', handleVisualViewportResize);
+
+    return () => {
+      document.removeEventListener('touchmove', preventScroll);
+      window.visualViewport?.removeEventListener('resize', handleVisualViewportResize);
+    };
+  }, [isOpen]);
 
   return (
     <Drawer
@@ -41,7 +64,6 @@ export function DrawerScrollableContent({ isOpen, setIsOpen }: DrawerScrollableC
       }}
       direction="bottom"
       modal={false}
-      repositionInputs={false}
       snapPoints={SNAP_POINTS as unknown as (number | string)[]}
       activeSnapPoint={activeSnapPoint}
       setActiveSnapPoint={setActiveSnapPoint}
@@ -55,7 +77,7 @@ export function DrawerScrollableContent({ isOpen, setIsOpen }: DrawerScrollableC
         <div className="no-scrollbar overflow-y-auto px-4">
           {Array.from({ length: 10 }).map((_, index) => (
             <>
-              <Input placeholder="Enter text" onFocus={handleInputFocus} />
+              <Input placeholder="Enter text" />
               <p
                 key={index}
                 className="style-lyra:mb-2 style-lyra:leading-relaxed mb-4 leading-normal"
