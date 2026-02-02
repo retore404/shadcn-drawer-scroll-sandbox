@@ -15,6 +15,11 @@ import { Input } from "../ui/input";
 const SNAP_POINTS = [0.45, 0.95] as const;
 const DEFAULT_SNAP_POINT = 0.45;
 
+export const calculatePaddingBottom = (activeSnapPoint: number): string => {
+  const paddingValue = 100 - activeSnapPoint * 100;
+  return `${paddingValue}dvh`;
+};
+
 interface DrawerScrollableContentProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
@@ -42,7 +47,16 @@ export function DrawerScrollableContent({ isOpen, setIsOpen }: DrawerScrollableC
       activeSnapPoint={activeSnapPoint}
       setActiveSnapPoint={setActiveSnapPoint}
     >
-      <DrawerContent>
+      <DrawerContent
+        className="min-h-[95dvh]"
+        // Shadcn/UIのDrawerの特性として，最大位置でスナップしていないとコンテンツの下部が見切れてしまう．
+        // そこで，見切れ分を動的に計算してpaddingBottomとして付与することで見切れを防止する．
+        style={{
+          paddingBottom:
+            typeof activeSnapPoint === 'number'
+              ? calculatePaddingBottom(activeSnapPoint)
+              : calculatePaddingBottom(DEFAULT_SNAP_POINT),
+        }}>
         <DrawerHeader>
           <DrawerTitle>Move Goal</DrawerTitle>
           <DrawerDescription>Set your daily activity goal.</DrawerDescription>
