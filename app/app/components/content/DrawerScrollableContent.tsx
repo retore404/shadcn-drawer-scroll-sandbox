@@ -11,15 +11,22 @@ import {
   DrawerTrigger,
 } from "../ui/drawer"
 
-const SNAP_POINTS = [0.2, 0.45, 1] as const;
+const SNAP_POINTS = [0.2, 0.45, 0.95] as const;
 const DEFAULT_SNAP_POINT = 0.45;
 
-export function DrawerScrollableContent() {
+interface DrawerScrollableContentProps {
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+}
+
+export function DrawerScrollableContent({ isOpen, setIsOpen }: DrawerScrollableContentProps) {
   const [activeSnapPoint, setActiveSnapPoint] = useState<
     number | string | null
   >(DEFAULT_SNAP_POINT);
   return (
     <Drawer
+      open={isOpen}
+      onOpenChange={setIsOpen}
       direction="bottom"
       modal={false}
       snapPoints={SNAP_POINTS as unknown as (number | string)[]}
@@ -51,12 +58,12 @@ export function DrawerScrollableContent() {
           ))}
           <span>The end.</span>
         </div>
-        {/* <DrawerFooter>
+        <DrawerFooter>
           <Button>Submit</Button>
           <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>
           </DrawerClose>
-        </DrawerFooter> */}
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   )
