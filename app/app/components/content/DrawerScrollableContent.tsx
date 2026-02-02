@@ -25,10 +25,6 @@ export function DrawerScrollableContent({ isOpen, setIsOpen }: DrawerScrollableC
     number | string | null
   >(DEFAULT_SNAP_POINT);
 
-  const handleInputFocus = () => {
-    setActiveSnapPoint(1);
-  };
-
   return (
     <Drawer
       open={isOpen}
@@ -55,7 +51,7 @@ export function DrawerScrollableContent({ isOpen, setIsOpen }: DrawerScrollableC
         <div className="no-scrollbar overflow-y-auto px-4">
           {Array.from({ length: 10 }).map((_, index) => (
             <>
-              <Input placeholder="Enter text" onFocus={handleInputFocus} />
+              <Input placeholder="Enter text"/>
               <p
                 key={index}
                 className="style-lyra:mb-2 style-lyra:leading-relaxed mb-4 leading-normal"
