@@ -24,6 +24,11 @@ export function DrawerScrollableContent({ isOpen, setIsOpen }: DrawerScrollableC
   const [activeSnapPoint, setActiveSnapPoint] = useState<
     number | string | null
   >(DEFAULT_SNAP_POINT);
+
+  const handleInputFocus = () => {
+    setActiveSnapPoint(1);
+  };
+
   return (
     <Drawer
       open={isOpen}
@@ -36,6 +41,7 @@ export function DrawerScrollableContent({ isOpen, setIsOpen }: DrawerScrollableC
       }}
       direction="bottom"
       modal={false}
+      repositionInputs={false}
       snapPoints={SNAP_POINTS as unknown as (number | string)[]}
       activeSnapPoint={activeSnapPoint}
       setActiveSnapPoint={setActiveSnapPoint}
@@ -49,7 +55,7 @@ export function DrawerScrollableContent({ isOpen, setIsOpen }: DrawerScrollableC
         <div className="no-scrollbar overflow-y-auto px-4">
           {Array.from({ length: 10 }).map((_, index) => (
             <>
-              <Input placeholder="Enter text" />
+              <Input placeholder="Enter text" onFocus={handleInputFocus} />
               <p
                 key={index}
                 className="style-lyra:mb-2 style-lyra:leading-relaxed mb-4 leading-normal"
