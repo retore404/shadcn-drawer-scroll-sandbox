@@ -11,7 +11,7 @@ import {
   DrawerTrigger,
 } from "../ui/drawer"
 
-const SNAP_POINTS = [0.2, 0.45, 0.95] as const;
+const SNAP_POINTS = [0.45, 1] as const;
 const DEFAULT_SNAP_POINT = 0.45;
 
 interface DrawerScrollableContentProps {
@@ -26,7 +26,13 @@ export function DrawerScrollableContent({ isOpen, setIsOpen }: DrawerScrollableC
   return (
     <Drawer
       open={isOpen}
-      onOpenChange={setIsOpen}
+      onOpenChange={(isOpen) => {
+        if (isOpen) {
+          setIsOpen(true);
+        } else {
+          setIsOpen(false);
+        }
+      }}
       direction="bottom"
       modal={false}
       snapPoints={SNAP_POINTS as unknown as (number | string)[]}
@@ -38,6 +44,7 @@ export function DrawerScrollableContent({ isOpen, setIsOpen }: DrawerScrollableC
           <DrawerTitle>Move Goal</DrawerTitle>
           <DrawerDescription>Set your daily activity goal.</DrawerDescription>
         </DrawerHeader>
+        <span>Current snap point is {activeSnapPoint}</span>
         <div className="no-scrollbar overflow-y-auto px-4">
           {Array.from({ length: 10 }).map((_, index) => (
             <p
@@ -55,12 +62,12 @@ export function DrawerScrollableContent({ isOpen, setIsOpen }: DrawerScrollableC
           ))}
           <span>The end.</span>
         </div>
-        <DrawerFooter>
+        {/* <DrawerFooter>
           <Button>Submit</Button>
           <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>
           </DrawerClose>
-        </DrawerFooter>
+        </DrawerFooter> */}
       </DrawerContent>
     </Drawer>
   )
