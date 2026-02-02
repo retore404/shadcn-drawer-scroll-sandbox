@@ -12,7 +12,7 @@ import {
 } from "../ui/drawer"
 import { Input } from "../ui/input";
 
-const SNAP_POINTS = [0.45, 1] as const;
+const SNAP_POINTS = [0.45, 0.95] as const;
 const DEFAULT_SNAP_POINT = 0.45;
 
 interface DrawerScrollableContentProps {
