@@ -33,9 +33,6 @@ export function DrawerScrollableContent({ isOpen, setIsOpen }: DrawerScrollableC
       activeSnapPoint={activeSnapPoint}
       setActiveSnapPoint={setActiveSnapPoint}
     >
-      <DrawerTrigger asChild>
-        <Button variant="outline">Scrollable Content</Button>
-      </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Move Goal</DrawerTitle>
